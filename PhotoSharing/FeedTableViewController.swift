@@ -16,9 +16,43 @@ class FeedTableViewController: UITableViewController {
     var usernames = [String]()
     var imageFiles = [PFFile]()
     
+    // get the posts for followedUser
+    // called in getFollowedUsers() to get the posts of all
+    // users that the current user follows
+    func getFollowingPosts(followedUser: String) {
+        let query = PFQuery(className: "Post")
+        query.whereKey("userid", equalTo: followedUser)
+        query.findObjectsInBackground(block: { (objects, error) in
+            if let posts = objects {
+                for post in posts {
+                    self.comments.append(post["message"] as! String)
+                    self.usernames.append(self.users[post["userid"] as! String]!)
+                    self.imageFiles.append(post["imageFile"] as! PFFile)
+                    self.tableView.reloadData()
+                }
+            }
+        })
+    }
+    
+    // get all the users that the current user follows
+    func getFollowedUsers() {
+        let getFollowedUsersQuery = PFQuery(className: "Following")
+        getFollowedUsersQuery.whereKey("follower", equalTo: PFUser.current()?.objectId)
+        getFollowedUsersQuery.findObjectsInBackground(block: { (objects, error) in
+            if let followers = objects {
+                for follower in followers {
+                    if let followedUser = follower["following"] {
+                        self.getFollowingPosts(followedUser: followedUser as! String)
+                    }
+                }
+            }
+        })
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        // get all users except current user
         let query = PFUser.query()
         query?.whereKey("username", notEqualTo: PFUser.current()?.username)
         query?.findObjectsInBackground(block: { (objects, error) in
@@ -29,28 +63,7 @@ class FeedTableViewController: UITableViewController {
                     }
                 }
             }
-            let getFollowedUsersQuery = PFQuery(className: "Following")
-            getFollowedUsersQuery.whereKey("follower", equalTo: PFUser.current()?.objectId)
-            getFollowedUsersQuery.findObjectsInBackground(block: { (objects, error) in
-                if let followers = objects {
-                    for follower in followers {
-                        if let followedUser = follower["following"] {
-                            let query = PFQuery(className: "Post")
-                            query.whereKey("userid", equalTo: followedUser)
-                            query.findObjectsInBackground(block: { (objects, error) in
-                                if let posts = objects {
-                                    for post in posts {
-                                        self.comments.append(post["message"] as! String)
-                                        self.usernames.append(self.users[post["userid"] as! String]!)
-                                        self.imageFiles.append(post["imageFile"] as! PFFile)
-                                        self.tableView.reloadData()
-                                    }
-                                }
-                            })
-                        }
-                    }
-                }
-            })
+            self.getFollowedUsers()
         })
     }
 
@@ -62,12 +75,10 @@ class FeedTableViewController: UITableViewController {
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
         return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
         return comments.count
     }
 

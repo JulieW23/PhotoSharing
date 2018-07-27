@@ -133,7 +133,7 @@
                                 </connections>
                             </barButtonItem>
                         </leftBarButtonItems>
-                        <barButtonItem key="rightBarButtonItem" style="plain" id="sza-8Z-AjO">
+                        <barButtonItem key="rightBarButtonItem" id="sza-8Z-AjO">
                             <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="CXC-05-0gm">
                                 <rect key="frame" x="276" y="7" width="83" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -189,17 +189,13 @@
                                         </label>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="ezl-4N-5A3" firstAttribute="centerX" secondItem="nlw-ef-K3s" secondAttribute="centerX" id="20m-hv-Xxu"/>
-                                        <constraint firstItem="JrP-fM-jLS" firstAttribute="centerX" secondItem="nlw-ef-K3s" secondAttribute="centerX" id="7gJ-Wb-8eb"/>
                                         <constraint firstItem="dxo-oR-xyF" firstAttribute="top" secondItem="ezl-4N-5A3" secondAttribute="bottom" constant="8" id="MsW-Fg-buv"/>
                                         <constraint firstItem="JrP-fM-jLS" firstAttribute="top" secondItem="dxo-oR-xyF" secondAttribute="bottom" constant="23" id="Wm4-71-Ma2"/>
                                         <constraint firstItem="ezl-4N-5A3" firstAttribute="top" secondItem="nlw-ef-K3s" secondAttribute="top" constant="11" id="XE2-Eu-PGf"/>
                                         <constraint firstItem="JrP-fM-jLS" firstAttribute="leading" secondItem="nlw-ef-K3s" secondAttribute="leading" constant="12" id="eOe-Z8-0Ol"/>
-                                        <constraint firstItem="dxo-oR-xyF" firstAttribute="centerX" secondItem="nlw-ef-K3s" secondAttribute="centerX" id="k3M-fg-oxm"/>
                                         <constraint firstAttribute="trailing" secondItem="dxo-oR-xyF" secondAttribute="trailing" constant="12" id="khR-A4-JHe"/>
                                         <constraint firstItem="dxo-oR-xyF" firstAttribute="leading" secondItem="nlw-ef-K3s" secondAttribute="leading" constant="12" id="ksl-Bd-ZXz"/>
                                         <constraint firstAttribute="trailing" secondItem="ezl-4N-5A3" secondAttribute="trailing" constant="12" id="rMG-Db-LvT"/>
-                                        <constraint firstItem="dxo-oR-xyF" firstAttribute="centerX" secondItem="nlw-ef-K3s" secondAttribute="centerX" id="rOx-2r-JFT"/>
                                         <constraint firstItem="ezl-4N-5A3" firstAttribute="leading" secondItem="nlw-ef-K3s" secondAttribute="leading" constant="12" id="s4h-Wg-bee"/>
                                         <constraint firstAttribute="trailing" secondItem="JrP-fM-jLS" secondAttribute="trailing" constant="12" id="uci-aA-vpW"/>
                                     </constraints>

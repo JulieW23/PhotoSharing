@@ -42,6 +42,7 @@ class PostViewController: UIViewController, UINavigationControllerDelegate, UIIm
             post["userid"] = PFUser.current()?.objectId
             if let imageData = UIImagePNGRepresentation(image) {
                 // reused spinner code from another file, figure out how to clean up
+                // FIGURE OUT HOW TO SHARE METHODS BETWEEN VIEW CONTROLLERS
                 let activityIndicator = UIActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
                 activityIndicator.center = self.view.center
                 activityIndicator.hidesWhenStopped = true
@@ -54,7 +55,8 @@ class PostViewController: UIViewController, UINavigationControllerDelegate, UIIm
                 let imageFile = PFFile(name: "image.png", data: imageData)
                 post["imageFile"] = imageFile
                 post.saveInBackground { (success, error) in
-                    // reused stop spinner code from another file, figure out how to clean up
+                    // reused stop spinner code from another file
+                    // FIGURE OUT HOW TO SHARE METHODS BETWEEN VIEW CONTROLLERS
                     activityIndicator.stopAnimating()
                     UIApplication.shared.endIgnoringInteractionEvents()
                     if success {
@@ -67,10 +69,10 @@ class PostViewController: UIViewController, UINavigationControllerDelegate, UIIm
                 }
             }
         }
-        
     }
     
     // reused code from another file, figure out how to clean up
+    // FIGURE OUT HOW TO SHARE METHODS BETWEEN VIEW CONTROLLERS
     func displayAlert(title:String, message:String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action) in
@@ -79,6 +81,7 @@ class PostViewController: UIViewController, UINavigationControllerDelegate, UIIm
         self.present(alert, animated: true, completion: nil)
     }
     
+    // if keyboard appears, move view up so that the textfield is not blocked by keyboard
     @objc func keyboardWillShow(_ textField: UITextField) {
         UIView.animate(withDuration: 0.3, animations: {
             self.view.frame = CGRect(x:self.view.frame.origin.x, y:self.view.frame.origin.y - 200, width:self.view.frame.size.width, height:self.view.frame.size.height);
@@ -86,6 +89,7 @@ class PostViewController: UIViewController, UINavigationControllerDelegate, UIIm
         })
     }
     
+    // move the view down to original position when keyboard disappears
     @objc func keyboardWillHide(_ textField: UITextField) {
         UIView.animate(withDuration: 0.3, animations: {
             self.view.frame = CGRect(x:self.view.frame.origin.x, y:self.view.frame.origin.y + 200, width:self.view.frame.size.width, height:self.view.frame.size.height);
@@ -94,18 +98,19 @@ class PostViewController: UIViewController, UINavigationControllerDelegate, UIIm
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        // keyboard
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
     }
     
     override func viewDidDisappear(_ animated: Bool) {
+        // keyboard
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillHide, object: nil)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
         // Do any additional setup after loading the view.
     }
 

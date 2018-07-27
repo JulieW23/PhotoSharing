@@ -11,8 +11,8 @@ import Parse
 
 class UserTableViewController: UITableViewController {
     
-    var usernames = [""]
-    var objectIds = [""]
+    var usernames = [String]()
+    var objectIds = [String]()
     var isFollowing = ["" : false]
     
     var refresher: UIRefreshControl = UIRefreshControl()
@@ -23,6 +23,26 @@ class UserTableViewController: UITableViewController {
             , sender: self)
     }
     
+    // get the users that the current user follows
+    func getFollowingUsers(objectId: String) {
+        let query = PFQuery(className: "Following")
+        query.whereKey("follower", equalTo: PFUser.current()?.objectId)
+        query.whereKey("following", equalTo: objectId)
+        query.findObjectsInBackground(block: { (objects, error) in
+            if let objects = objects {
+                if objects.count > 0 {
+                    self.isFollowing[objectId] = true
+                } else {
+                    self.isFollowing[objectId] = false
+                }
+                if self.usernames.count == self.isFollowing.count {
+                    self.tableView.reloadData()
+                    self.refresher.endRefreshing()
+                }
+            }
+        })
+    }
+    
     @objc func updateTable() {
         let query = PFUser.query()
         query?.whereKey("username", notEqualTo: PFUser.current()?.username)
@@ -30,37 +50,14 @@ class UserTableViewController: UITableViewController {
             if error != nil {
                 print(error)
             } else if let users = users {
-                self.usernames.removeAll()
-                self.objectIds.removeAll()
                 self.isFollowing.removeAll()
                 for object in users {
-                    if let user = object as? PFUser {
-                        if let username = user.username {
-                            if let objectId = user.objectId {
-                                // make it look like username list
-                                let usernameArray = username.components(separatedBy: "@")
-                                self.usernames.append(usernameArray[0])
-                                self.objectIds.append(objectId)
-                                
-                                // following
-                                let query = PFQuery(className: "Following")
-                                query.whereKey("follower", equalTo: PFUser.current()?.objectId)
-                                query.whereKey("following", equalTo: objectId)
-                                query.findObjectsInBackground(block: { (objects, error) in
-                                    if let objects = objects {
-                                        if objects.count > 0 {
-                                            self.isFollowing[objectId] = true
-                                        } else {
-                                            self.isFollowing[objectId] = false
-                                        }
-                                        if self.usernames.count == self.isFollowing.count {
-                                            self.tableView.reloadData()
-                                            self.refresher.endRefreshing()
-                                        }
-                                    }
-                                })
-                            }
-                        }
+                    if let user = object as? PFUser, let username = user.username, let objectId = user.objectId {
+                        let usernameArray = username.components(separatedBy: "@")
+                        self.usernames.append(usernameArray[0])
+                        self.objectIds.append(objectId)
+                        
+                        self.getFollowingUsers(objectId: objectId)
                     }
                 }
             }
