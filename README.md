@@ -5,6 +5,12 @@ A photo sharing app developed using Swift with back end data stored on Parse Pla
 
 Other Swift practice project: [Tinder Clone](https://github.com/JulieW23/TinderClone)
 
+## Functionality
+* Signup/Login
+* Follow users
+* Upload posts (images with optional captions)
+* Browse posts by followed users
+
 ## Requires:
 * XCode 9
 * [CocoaPods](https://cocoapods.org/):
