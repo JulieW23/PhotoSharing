@@ -1,7 +1,9 @@
 # PhotoSharing
 
 ## Description:
-A photo sharing app developed using Swift with back end data stored on Parse Platform
+A photo sharing app developed using Swift with back end data stored on Parse Platform.
+
+* Other Swift practice project: [Tinder Clone](https://github.com/JulieW23/TinderClone)
 
 ## Requires:
 * XCode 9
